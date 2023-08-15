@@ -4,18 +4,70 @@ from mitosheet.streamlit.v1 import spreadsheet
 import analytics
 
 analytics.write_key = '6I7ptc5wcIGC4WZ0N1t0NXvvAbjRGUgX'
+
 st.set_page_config(layout='wide')
-st.title("Data Cleaning Verification")
+
+# Define custom CSS style for the form
+custom_css = """
+<style>
+    .email-form {
+        background-color: #F0F0F0; /* Set background color */
+        padding: 20px; /* Add padding */
+        border-radius: 10px; /* Add rounded corners */
+        font-family: Arial, sans-serif; /* Set font family */
+        line-height: 1.6; /* Set line height */
+    }
+    .email-form h2 {
+        color: #1E90FF; /* Set title color */
+        text-align: center; /* Center-align title */
+    }
+    .email-form label {
+        font-weight: bold; /* Bold labels */
+    }
+    .email-form input[type="text"] {
+        width: 100%; /* Full width for input field */
+        padding: 10px; /* Add padding to input field */
+        margin-bottom: 15px; /* Add spacing between input fields */
+        border: 1px solid #ccc; /* Add border */
+        border-radius: 5px; /* Add rounded corners to input field */
+    }
+    .email-form button {
+        display: block; /* Make button a block element for full width */
+        width: 100%; /* Full width button */
+        padding: 10px; /* Add padding to button */
+        background-color: #1E90FF; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Add rounded corners to button */
+        cursor: pointer; /* Change cursor on hover */
+    }
+</style>
+"""
+
+# Apply the custom CSS using st.markdown()
+st.markdown(custom_css, unsafe_allow_html=True)
+
+st.markdown(
+    "<h1 style='color: #FF5733; text-align: center; "
+    "font-family: Arial, sans-serif; background-color: #F0F0F0; "
+    "padding: 10px; border-radius: 10px;'>Data Cleaning Verification</h1>",
+    unsafe_allow_html=True
+)
 
 st.markdown("""
-This app only allows you to download data after it passes a series of data quality checks. After importing data, the app will run a series of checks against your data and prompt you with a set of data cleaning steps. 
+<div class="markdown-content">
+<h1>This app only allows you to download data after it passes a series of data quality checks.</h1>
+<p>After importing data, the app will run a series of checks against your data and prompt you with a set of data cleaning steps.</p>
 
-To use the app, follow the mitosheet below:
-1. Click **Import** > **Import Files** and select an XLSX file from the `data` folder.
-2. Click the **Import Button**, and configure the import to skip rows depending on the file you choose.
-3. Use the Mitosheet to clean the data according to the prompts.
-4. Once all of the checks pass, download the csv file.
-""")
+<p>To use the app, follow the mitosheet below:</p>
+<ol>
+    <li>Click <strong>Import</strong> &gt; <strong>Import Files</strong> and select an XLSX file from the <code>data</code> folder.</li>
+    <li>Click the <strong>Import Button</strong>, and configure the import to skip rows depending on the file you choose.</li>
+    <li>Use the Mitosheet to clean the data according to the prompts.</li>
+    <li>Once all of the checks pass, download the csv file.</li>
+</ol>
+</div>
+""", unsafe_allow_html=True)
 
 CHECKS_AND_ERRORS = [
     # First column is issue date
@@ -57,7 +109,7 @@ def run_data_checks_and_display_prompts(df):
 # If the user has not submitted the form yet and an analytics key is set, display the email form
 with st.form("email_form"):
     st.write("To be the first to learn about new features, coming changes, and advanced functionality, signup for the Mito for Streamlit email list.")
-    email = st.text_input("Email")
+    email = st.text_input("EMAIL")
     submitted = st.form_submit_button("Sign Up")
     
     if submitted:
@@ -65,7 +117,7 @@ with st.form("email_form"):
         analytics.identify(email, {'location':'streamlit_data_cleaning_verification_demo'})
         
         # Store that the form has been submitted so we don't display it again
-        st.success("Thanks for signing up! We'll keep you updated on new features.")
+        st.success(f"Thanks for signing up {email} ! We'll keep you updated on new features.")
         
 @st.cache_data
 def convert_df(df):
