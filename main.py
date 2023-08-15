@@ -124,6 +124,12 @@ def convert_df(df):
     return df.to_csv(index = False).encode('utf-8')
 
 # Display the data inside of the spreadsheet so the user can easily fix the data quality issues.
+st.markdown(
+    "<h3 style='color: #111; text-align: center; "
+    "font-family: Arial, sans-serif; background-color: #F0F0F0; "
+    "padding: 10px; border-radius: 10px;'>Your Mitosheet</h3>",
+    unsafe_allow_html=True
+)
 dfs, _ = spreadsheet(import_folder='./data')
 
 # If the user has not yet imported data, prompt them to do so.
